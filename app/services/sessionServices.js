@@ -7,4 +7,7 @@ sessionServices.createSession=async(payload)=>{
 sessionServices.findOneSession=async(searchQuery,projectionQuery)=>{
     return await sessionModel.findOne(searchQuery,projectionQuery);
 }
+sessionServices.findSession=async(searchQuery,projectionQuery)=>{
+    return await sessionModel.find(searchQuery,projectionQuery);
+}
 module.exports=sessionServices;

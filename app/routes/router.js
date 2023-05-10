@@ -6,8 +6,8 @@ const userController = require('../controller/userController');
 const router=express.Router();
 
 router.post('/signup',validateJoiSchema(signUpSchema),userController.signUp);
-router.post('/login',validateJoiSchema(loginSchema));
-// router.put('/update',validateJoiSchema());
+router.post('/login',validateJoiSchema(loginSchema),userController.login);
+router.put('/update',validateJoiSchema());
 // router.delete('/delete',validateJoiSchema());
 
 module.exports=router;
