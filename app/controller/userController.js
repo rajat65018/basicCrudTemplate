@@ -1,7 +1,7 @@
 const jwt=require('jsonwebtoken');
-const { findUser, createUser } = require("../services/userServices");
+const { findUser, createUser, updateOneUser } = require("../services/userServices");
 const MESSAGES = require("../utils/messages");
-const { createSession, findSession } = require('../services/sessionServices');
+const { createSession, findSession, findOneSession } = require('../services/sessionServices');
 
 const userController={}
 userController.signUp=async (req,res)=>{
@@ -34,5 +34,26 @@ userController.login=async(req,res)=>{
         createSession(session);
         return res.json({message:MESSAGES.LOGIN_SUCCESSFUL,token:session.token});   
     }
+}
+
+userController.update=async(req,res)=>{
+    cons
+}
+
+userController.delete=async(req,res)=>{
+    const payload=req.headers;
+    console.log(payload);
+    const findToken=await findOneSession({token:payload.authorization});
+    if(!findToken){
+        return res.status(404).json({message:MESSAGES.USER_NOT_FOUND});
+    }
+    // const findUser=await findOneUser({_id:findToken.userId,isDeleted:false});
+    const deleteUser=await updateOneUser({_id:findToken.userId},{$set:
+    {isDeleted:true},
+    });
+    if(!deleteUser){
+        return res.status(404).json({message:MESSAGES.USER_NOT_FOUND});
+    }
+    return res.status(200).json({message:MESSAGES.ACCOUNT_DELETED});
 }
 module.exports=userController;
