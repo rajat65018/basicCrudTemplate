@@ -4,6 +4,12 @@ const MESSAGES = require("../utils/messages");
 const { createSession, findSession, findOneSession } = require('../services/sessionServices');
 
 const userController={}
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 userController.signUp=async (req,res)=>{
     let payload=req.body;
     if((await findUser({email:payload.email}))){
@@ -19,6 +25,12 @@ userController.signUp=async (req,res)=>{
     return res.json({message:MESSAGES.ACCOUNT_CREATED});
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 userController.login=async(req,res)=>{
     let payload=req.body;
     const user=await findUser({email:payload.email,password:payload.password});
@@ -36,10 +48,32 @@ userController.login=async(req,res)=>{
     }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 userController.update=async(req,res)=>{
-    cons
+    const payload=req.body;
+    const findToken=await findOneSession({token:payload.token});
+    if(!findToken){
+        return res.status(404).json({message:MESSAGES.USER_NOT_FOUND});
+    }
+    const user=await updateOneUser({_id:findToken.userId,isDeleted:false},{$set:
+        {name:payload.name,contact:payload.contact}});
+    if(!user){
+        return res.status(404).json({message:MESSAGES.USER_NOT_FOUND});
+    }
+    return res.status(200).json({message:MESSAGES.USER_UPDATED_SUCCESSFULLY});
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 userController.delete=async(req,res)=>{
     const payload=req.headers;
     console.log(payload);
